@@ -33,7 +33,7 @@ model User {
 
 model Subscription {
   id     String              @id @default(cuid()) @map("_id")
-  userID String              @unique
+  userId String              @unique
   plan   SubscriptionPerioid
 
   startDate DateTime @default(now())
@@ -42,5 +42,5 @@ model Subscription {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User User @relation(fields: [userID], references: [id])
+  User User @relation(fields: [userId], references: [id])
 }
