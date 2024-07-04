@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  free
+  premium
+}
+
+enum SubscriptionPerioid {
+  monthly
+  yearl
+}
+
+model User {
+  id         String  @id @default(cuid()) @map("_id")
+  email      String  @unique
+  name       String?
+  plan       Plan    @default(free)
+  customerId String? @unique
+
+  Subscription Subscription?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscription {
+  id     String              @id @default(cuid()) @map("_id")
+  userID String              @unique
+  plan   SubscriptionPerioid
+
+  startDate DateTime @default(now())
+  endDate   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User User @relation(fields: [userID], references: [id])
+}
